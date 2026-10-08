@@ -23,7 +23,6 @@
   .login-box h2{margin-bottom:6px;color:#1a202c;font-size:20px}
   .login-box p{color:var(--muted);font-size:12.5px;margin-bottom:20px}
   .login-error{color:var(--crit);font-size:12px;margin-top:8px;display:none}
-  .auth-hint{font-size:11.5px;color:var(--primary);margin-bottom:12px;background:#ebf8ff;padding:8px;border-radius:6px;border:1px dashed #bee3f8}
 
   header{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
   h1{font-size:22px;color:#1a202c}
@@ -90,7 +89,7 @@
 </head>
 <body>
 
-<!-- Login Screen with 2FA Authenticator -->
+<!-- Login Screen with Banner Image -->
 <div id="loginOverlay">
   <div class="login-box">
     <div class="login-banner">
@@ -98,37 +97,18 @@
       <div class="login-banner-text">⚡ IDC3</div>
     </div>
     <div class="login-body">
-      <h2>🔐 เข้าสู่ระบบ (2FA)</h2>
+      <h2>🔐 เข้าสู่ระบบ</h2>
       <p>Infrastructure Dashboard & Editor</p>
-      
-      <!-- Step 1: User & Pass -->
-      <div id="step1Login">
-        <div class="form-group">
-          <label>USERNAME</label>
-          <input type="text" id="userInput" placeholder="กรอกชื่อผู้ใช้งาน">
-        </div>
-        <div class="form-group">
-          <label>PASSWORD</label>
-          <input type="password" id="passInput" placeholder="กรอกรหัสผ่าน" onkeypress="checkEnter(event)">
-        </div>
-        <div id="loginError" class="login-error">Username หรือ Password ไม่ถูกต้อง!</div>
-        <button class="btn btn-block" onclick="handleStep1()">ดำเนินการต่อ</button>
+      <div class="form-group">
+        <label>USERNAME</label>
+        <input type="text" id="userInput" placeholder="กรอกชื่อผู้ใช้งาน">
       </div>
-
-      <!-- Step 2: Authenticator Code -->
-      <div id="step2Auth" style="display:none;">
-        <div class="auth-hint">
-          📱 กรุณากรอกรหัส 6 หลักจาก Google / Microsoft Authenticator
-        </div>
-        <div class="form-group">
-          <label>AUTHENTICATOR CODE (6 หลัก)</label>
-          <input type="text" id="authCodeInput" maxlength="6" placeholder="000000" style="text-align:center;font-size:18px;letter-spacing:4px;" onkeypress="checkAuthEnter(event)">
-        </div>
-        <div id="authError" class="login-error">รหัสยืนยันตัวตนไม่ถูกต้อง!</div>
-        <button class="btn btn-block" onclick="handleStep2()">ยืนยันตัวตน</button>
-        <button class="btn btn-secondary btn-block" style="margin-top:6px;background:#718096;" onclick="backToStep1()">ย้อนกลับ</button>
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" id="passInput" placeholder="กรอกรหัสผ่าน" onkeypress="checkEnter(event)">
       </div>
-
+      <div id="loginError" class="login-error">Username หรือ Password ไม่ถูกต้อง!</div>
+      <button class="btn btn-block" onclick="handleLogin()">เข้าสู่ระบบ</button>
     </div>
   </div>
 </div>
@@ -396,44 +376,23 @@
   </div>
 </div>
 
-<footer>IDC3 Master Infrastructure Dashboard & Editor — ซ่อน Secret Key เรียบร้อย v31</footer>
+<footer>IDC3 Master Infrastructure Dashboard & Editor — อัปเดตสถานะ Incident เป็น Closed v28</footer>
 
 <script>
   let loadChartInstance = null;
 
-  /* ---------- LOGIN & 2FA AUTHENTICATOR ---------- */
-  function handleStep1() {
+  /* ---------- LOGIN ---------- */
+  function handleLogin() {
     const u = document.getElementById('userInput').value;
     const p = document.getElementById('passInput').value;
     if(u === 'admin' && p === 'idc32026') {
-      document.getElementById('loginError').style.display = 'none';
-      document.getElementById('step1Login').style.display = 'none';
-      document.getElementById('step2Auth').style.display = 'block';
-      document.getElementById('authCodeInput').focus();
+      document.getElementById('loginOverlay').style.display = 'none';
+      sessionStorage.setItem('idc3_logged_in', 'true');
     } else {
       document.getElementById('loginError').style.display = 'block';
     }
   }
-
-  function handleStep2() {
-    const code = document.getElementById('authCodeInput').value.trim();
-    if(code === "123456" || code.length === 6) {
-      document.getElementById('loginOverlay').style.display = 'none';
-      sessionStorage.setItem('idc3_logged_in', 'true');
-    } else {
-      document.getElementById('authError').style.display = 'block';
-    }
-  }
-
-  function backToStep1() {
-    document.getElementById('step2Auth').style.display = 'none';
-    document.getElementById('step1Login').style.display = 'block';
-    document.getElementById('authError').style.display = 'none';
-  }
-
-  function checkEnter(e){ if(e.key === 'Enter') handleStep1(); }
-  function checkAuthEnter(e){ if(e.key === 'Enter') handleStep2(); }
-
+  function checkEnter(e){ if(e.key === 'Enter') handleLogin(); }
   window.onload = function() {
     if(sessionStorage.getItem('idc3_logged_in') === 'true') {
       document.getElementById('loginOverlay').style.display = 'none';
@@ -625,7 +584,7 @@
       {img:"", phase:"Phase2-UT-UPSA-02", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010001", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-UPSA-03", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010003", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-UPSB-04", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205212186010001", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
-      {img:"", phase:"Phase2-UT-UPSB-05", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010006", tech:"Power: 380-415V, FL: 12.9A, Match Press... Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
+      {img:"", phase:"Phase2-UT-UPSB-05", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010006", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-UPSB-06", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010005", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-MDBR-07", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010004", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-MDBR-08", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010002", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"}
@@ -648,7 +607,7 @@
       {img:"", incNo:"260430818", dateTime:"30 เมษายน 2026", system:"UPS-1D", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-1D Rectifier Critical Alarm", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"260430809", dateTime:"30 เมษายน 2026", system:"UPS-1C", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-1C Rectifier Critical Alarm", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"25111855", dateTime:"18 พฤศจิกายน 2025", system:"UPS - 1C", desc:"Incident Inet-IDC3 : ตรวจพบ UPS - 1C Phase 1 ไม่สามารถดูค่า Parameter ในโปรแกรม BMS ได้", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
-      {img:"", no:"241030424", dateTime:"30 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery Alarm UPS-2A Phase 1 STR2 #21 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
+      {img:"", incNo:"241030424", dateTime:"30 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery Alarm UPS-2A Phase 1 STR2 #21 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"24101585", dateTime:"15 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery Alarm UPS-2D Phase 1 STR2 #28 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"241010257", dateTime:"10 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS-2A Phase 1 STR2 #32 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"240716157", dateTime:"16 กรกฎาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS-2A Phase 1 STR2 #32 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
@@ -668,7 +627,7 @@
       {img:"", incNo:"I-114908", dateTime:"21/09/2021", system:"UPS 60k", desc:"Incident Inet-IDC3 : ตรวจพบ UPS 60k office มี alarm fan fail", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-99286", dateTime:"27/05/2021", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบจาก PM UPS 60kVA อาคาร Office พบ สายขั้วแบตเตอรี่ จำนวน2เส้น ขึ้นคราบขี้เกลือและเป็นตะกรัน", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-53722", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS-2B (Sting 3 ลูกที่ 32) จำนวน 1 ลูก และ UPS-1D (Sting 2 ลูกที่ 40 Sting 3 ลูกที่ 4,20) จำนวน 3 ลูก ค่าความต้านทานสูง(IR)", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
-      {img:"", incNo:"I-53720", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจหน้าจอ Battery UPS(2) 30 KVA เสื่อมสภาพ จำนวน 3 ลูก", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
+      {img:"", incNo:"I-53720", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS(2) 30 KVA เสื่อมสภาพ จำนวน 3 ลูก", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-52065", dateTime:"9/5/2020", system:"UPS 60 kVA", desc:"Incident Inet-IDC3 : UPS 60 kVA communication has been lost.", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-45681", dateTime:"25/03/2020", system:"UPS-2D", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-2D มี Alarm Ractifier critical alarm", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-23763", dateTime:"28/10/2019", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ alarm battery cells fault Batt ups-1b STR.3 ลูกที่ 14", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
@@ -676,7 +635,7 @@
     ]
   };
 
-  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v31'));
+  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v28'));
   let db = defaultData;
   if(savedData) {
     for(let key in defaultData) {
@@ -692,7 +651,7 @@
 
   function saveData() {
     try {
-      localStorage.setItem('idc3_master_db_v31', JSON.stringify(db));
+      localStorage.setItem('idc3_master_db_v28', JSON.stringify(db));
     } catch(e) {
       alert('พื้นที่จัดเก็บเต็ม! รูปภาพที่อัปโหลดมีขนาดใหญ่เกินไป\nแนะนำให้ใช้ลิงก์ URL รูปภาพแทนการอัปโหลดไฟล์ครับ');
     }
