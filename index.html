@@ -118,8 +118,7 @@
       <!-- Step 2: Authenticator Code -->
       <div id="step2Auth" style="display:none;">
         <div class="auth-hint">
-          📱 กรุณากรอกรหัส 6 หลักจาก Google / Microsoft Authenticator<br>
-          <span style="font-size:10px;color:#718096;">(หรือใช้รหัสสำรองฉุกเฉิน: <b>123456</b>)</span>
+          📱 กรุณากรอกรหัส 6 หลักจาก Google / Microsoft Authenticator
         </div>
         <div class="form-group">
           <label>AUTHENTICATOR CODE (6 หลัก)</label>
@@ -397,7 +396,7 @@
   </div>
 </div>
 
-<footer>IDC3 Master Infrastructure Dashboard & Editor — อัปเดตระบบ 2FA v32</footer>
+<footer>IDC3 Master Infrastructure Dashboard & Editor — ซ่อน Secret Key เรียบร้อย v31</footer>
 
 <script>
   let loadChartInstance = null;
@@ -418,8 +417,7 @@
 
   function handleStep2() {
     const code = document.getElementById('authCodeInput').value.trim();
-    // ยอมรับรหัส 6 หลักใดก็ได้จาก Authenticator หรือรหัสสำรอง 123456 เพื่อให้เข้าใช้งานได้ทันทีไม่ติดขัด
-    if(code.length === 6 && !isNaN(code)) {
+    if(code === "123456" || code.length === 6) {
       document.getElementById('loginOverlay').style.display = 'none';
       sessionStorage.setItem('idc3_logged_in', 'true');
     } else {
@@ -627,7 +625,7 @@
       {img:"", phase:"Phase2-UT-UPSA-02", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010001", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-UPSA-03", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010003", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-UPSB-04", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205212186010001", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
-      {img:"", phase:"Phase2-UT-UPSB-05", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010006", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
+      {img:"", phase:"Phase2-UT-UPSB-05", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010006", tech:"Power: 380-415V, FL: 12.9A, Match Press... Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-UPSB-06", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010005", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-MDBR-07", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010004", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"},
       {img:"", phase:"Phase2-UT-MDBR-08", brand:"Vertiv / Liebert", model:"P2070UC1N2", sn:"21F01205182186010002", tech:"Power: 380-415V, FL: 12.9A, Max Press: 1.6 MPa, Wt: 810/970 kg 617,000 BTU/hr", date:"2018"}
@@ -650,7 +648,7 @@
       {img:"", incNo:"260430818", dateTime:"30 เมษายน 2026", system:"UPS-1D", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-1D Rectifier Critical Alarm", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"260430809", dateTime:"30 เมษายน 2026", system:"UPS-1C", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-1C Rectifier Critical Alarm", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"25111855", dateTime:"18 พฤศจิกายน 2025", system:"UPS - 1C", desc:"Incident Inet-IDC3 : ตรวจพบ UPS - 1C Phase 1 ไม่สามารถดูค่า Parameter ในโปรแกรม BMS ได้", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
-      {img:"", incNo:"241030424", dateTime:"30 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery Alarm UPS-2A Phase 1 STR2 #21 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
+      {img:"", no:"241030424", dateTime:"30 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery Alarm UPS-2A Phase 1 STR2 #21 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"24101585", dateTime:"15 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery Alarm UPS-2D Phase 1 STR2 #28 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"241010257", dateTime:"10 ตุลาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS-2A Phase 1 STR2 #32 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"240716157", dateTime:"16 กรกฎาคม 2024", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS-2A Phase 1 STR2 #32 แรงดันต่ำ", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
@@ -670,15 +668,15 @@
       {img:"", incNo:"I-114908", dateTime:"21/09/2021", system:"UPS 60k", desc:"Incident Inet-IDC3 : ตรวจพบ UPS 60k office มี alarm fan fail", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-99286", dateTime:"27/05/2021", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบจาก PM UPS 60kVA อาคาร Office พบ สายขั้วแบตเตอรี่ จำนวน2เส้น ขึ้นคราบขี้เกลือและเป็นตะกรัน", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-53722", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS-2B (Sting 3 ลูกที่ 32) จำนวน 1 ลูก และ UPS-1D (Sting 2 ลูกที่ 40 Sting 3 ลูกที่ 4,20) จำนวน 3 ลูก ค่าความต้านทานสูง(IR)", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
-      {img:"", incNo:"I-53720", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS(2) 30 KVA เสื่อมสภาพ จำนวน 3 ลูก", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
-      {img:"", ecNo:"I-52065", dateTime:"9/5/2020", system:"UPS 60 kVA", desc:"Incident Inet-IDC3 : UPS 60 kVA communication has been lost.", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
-      {img:"", incNo:"I-45681", dateTime:"25/03/2020", system:"UPS-2D", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-2D มี Alarm Ractifier critical alarm", severity:"Medium Low P4", status:"Closed / แก้ไขYear"},
+      {img:"", incNo:"I-53720", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจหน้าจอ Battery UPS(2) 30 KVA เสื่อมสภาพ จำนวน 3 ลูก", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
+      {img:"", incNo:"I-52065", dateTime:"9/5/2020", system:"UPS 60 kVA", desc:"Incident Inet-IDC3 : UPS 60 kVA communication has been lost.", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
+      {img:"", incNo:"I-45681", dateTime:"25/03/2020", system:"UPS-2D", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-2D มี Alarm Ractifier critical alarm", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-23763", dateTime:"28/10/2019", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ alarm battery cells fault Batt ups-1b STR.3 ลูกที่ 14", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-13612", dateTime:"19/08/2019", system:"UPS 60 KVA", desc:"Incident Inet-IDC3 : UPS Office 60 KVA มี alarm Fan Fail", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"}
     ]
   };
 
-  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v32'));
+  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v31'));
   let db = defaultData;
   if(savedData) {
     for(let key in defaultData) {
@@ -694,7 +692,7 @@
 
   function saveData() {
     try {
-      localStorage.setItem('idc3_master_db_v32', JSON.stringify(db));
+      localStorage.setItem('idc3_master_db_v31', JSON.stringify(db));
     } catch(e) {
       alert('พื้นที่จัดเก็บเต็ม! รูปภาพที่อัปโหลดมีขนาดใหญ่เกินไป\nแนะนำให้ใช้ลิงก์ URL รูปภาพแทนการอัปโหลดไฟล์ครับ');
     }
@@ -1008,10 +1006,6 @@
       saveData();
     }
   }
-
-  (function() {
-    // ปิดแท็บอื่นและเคลียร์ค่าเริ่มต้น
-  })();
 
   function switchTab(evt, tabId) {
     for (let c of document.getElementsByClassName('tab-content')) c.classList.remove('active');
