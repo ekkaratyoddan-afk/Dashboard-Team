@@ -118,8 +118,7 @@
       <!-- Step 2: Authenticator Code -->
       <div id="step2Auth" style="display:none;">
         <div class="auth-hint">
-          📱 กรุณากรอกรหัส 6 หลักจาก Google / Microsoft Authenticator<br>
-          <span style="font-size:10px;color:#718096;">(หรือใช้รหัสสำรองฉุกเฉิน: <b>123456</b>)</span>
+          📱 กรุณากรอกรหัส 6 หลักจาก Google / Microsoft Authenticator
         </div>
         <div class="form-group">
           <label>AUTHENTICATOR CODE (6 หลัก)</label>
@@ -397,7 +396,7 @@
   </div>
 </div>
 
-<footer>IDC3 Master Infrastructure Dashboard & Editor — แสดงข้อมูลจริงครบถ้วน v34</footer>
+<footer>IDC3 Master Infrastructure Dashboard & Editor — ซ่อนรหัสสำรองเรียบร้อย v35</footer>
 
 <script>
   let loadChartInstance = null;
@@ -664,7 +663,7 @@
       {img:"", incNo:"221214325", dateTime:"15 ธันวาคม 2022", system:"UPS-2A", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-2A_INVERTER_FAIL ห้อง UPS A อาคาร UT Phase 1 ชั้น 2", severity:"Medium Medium P3", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"221020240", dateTime:"20 ตุลาคม 2022", system:"UPS30Kva", desc:"Incident Inet-IDC3 : จากการทำ CCM เปลี่ยน Cap bank UPS30Kva ตรวจพบว่าการเชื่อมต่อระหว่างUPS1-UPS2 เกิดการชำรุด", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"22092542", dateTime:"25 กันยายน 2022", system:"UPS-1C", desc:"Incident Inet-IDC3 : ตรวจพบ Alarm Transfer impossible บอร์ด Bypass UPS-1C เวลา 16:55 น.", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
-      {img:"", incNo:"I-146034", dateTime:"27/03/2023", system:"UPS1A", desc:"Incident Inet-IDC3 : ตรวจพบ Alarm ไฟสีส้มกระพริบหน้า UPS1A กับ UPS2B UPS 400 kVA Phase1", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
+      {img:"", incNo:"I-146034", dateTime:"27/03/2023", system:"UPS1A", desc:"Incident Inet-IDC3 : ตรวจพบ Alarm ไฟสีส้มกระพริบหน้า UPS1Aกับ UPS2B UPS 400 kVA Phase1", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-115785", dateTime:"27/09/2021", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ battery UPS 2D String3 UT1 มีน้ำไหลออกจากขั้วของ Battery", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-114908", dateTime:"21/09/2021", system:"UPS 60k", desc:"Incident Inet-IDC3 : ตรวจพบ UPS 60k office มี alarm fan fail", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-99286", dateTime:"27/05/2021", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบจาก PM UPS 60kVA อาคาร Office พบ สายขั้วแบตเตอรี่ จำนวน2เส้น ขึ้นคราบขี้เกลือและเป็นตะกรัน", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
@@ -677,7 +676,7 @@
     ]
   };
 
-  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v34'));
+  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v35'));
   let db = defaultData;
   if(savedData) {
     for(let key in defaultData) {
@@ -693,7 +692,7 @@
 
   function saveData() {
     try {
-      localStorage.setItem('idc3_master_db_v34', JSON.stringify(db));
+      localStorage.setItem('idc3_master_db_v35', JSON.stringify(db));
     } catch(e) {
       alert('พื้นที่จัดเก็บเต็ม! รูปภาพที่อัปโหลดมีขนาดใหญ่เกินไป\nแนะนำให้ใช้ลิงก์ URL รูปภาพแทนการอัปโหลดไฟล์ครับ');
     }
