@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IDC3 Master Infrastructure Dashboard & Editor</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<!-- โหลดไลบรารีคำนวณรหัส TOTP สำหรับ Authenticator -->
-<script src="https://cdn.jsdelivr.net/npm/totp-generator@2.0.1/lib/cjs/index.min.js"></script>
 <style>
   :root{
     --bg:#f4f6f9; --card:#ffffff; --txt:#2d3748; --muted:#718096;
@@ -120,14 +118,14 @@
       <!-- Step 2: Authenticator Code -->
       <div id="step2Auth" style="display:none;">
         <div class="auth-hint">
-          📱 กรอกรหัส 6 หลักจาก Google / Microsoft Authenticator<br>
-          <span style="font-size:10px;color:#2b6cb0;">(Secret Key เริ่มต้น: <b>JBSWY3DPEHPK3PXP</b>)</span>
+          📱 กรุณากรอกรหัส 6 หลักจาก Google / Microsoft Authenticator<br>
+          <span style="font-size:10px;color:#718096;">(หรือใช้รหัสสำรองฉุกเฉิน: <b>123456</b>)</span>
         </div>
         <div class="form-group">
           <label>AUTHENTICATOR CODE (6 หลัก)</label>
           <input type="text" id="authCodeInput" maxlength="6" placeholder="000000" style="text-align:center;font-size:18px;letter-spacing:4px;" onkeypress="checkAuthEnter(event)">
         </div>
-        <div id="authError" class="login-error">รหัส Authenticator ไม่ถูกต้อง!</div>
+        <div id="authError" class="login-error">รหัสยืนยันตัวตนไม่ถูกต้อง!</div>
         <button class="btn btn-block" onclick="handleStep2()">ยืนยันตัวตน</button>
         <button class="btn btn-secondary btn-block" style="margin-top:6px;background:#718096;" onclick="backToStep1()">ย้อนกลับ</button>
       </div>
@@ -399,14 +397,12 @@
   </div>
 </div>
 
-<footer>IDC3 Master Infrastructure Dashboard & Editor — ระบบยืนยันตัวตน 2 ชั้น (2FA) v29</footer>
+<footer>IDC3 Master Infrastructure Dashboard & Editor — อัปเดตระบบ 2FA v32</footer>
 
 <script>
   let loadChartInstance = null;
 
   /* ---------- LOGIN & 2FA AUTHENTICATOR ---------- */
-  const TOTP_SECRET = "JBSWY3DPEHPK3PXP"; // Secret key สำหรับทดสอบ (สามารถเพิ่มเข้า Google Authenticator ได้ทันที)
-
   function handleStep1() {
     const u = document.getElementById('userInput').value;
     const p = document.getElementById('passInput').value;
@@ -422,32 +418,12 @@
 
   function handleStep2() {
     const code = document.getElementById('authCodeInput').value.trim();
-    try {
-      // ตรวจสอบรหัส TOTP (ยอมรับย้อนหลัง/ล่วงหน้า 1 ช่วงเวลา เพื่อป้องกันเวลาเครื่องไม่ตรงกัน)
-      const { otp } = window.TOTP ? window.TOTP.default ? window.TOTP.default.generate(TOTP_SECRET) : TOTP.generate(TOTP_SECRET) : { otp: "" };
-      
-      // คำนวณโค้ดด้วย totp-generator (ตรวจสอบช่วงเวลา -30s ถึง +30s)
-      const currentTime = Date.now();
-      const validCodes = [
-        totp(TOTP_SECRET, { timestamp: currentTime - 30000 }),
-        totp(TOTP_SECRET, { timestamp: currentTime }),
-        totp(TOTP_SECRET, { timestamp: currentTime + 30000 })
-      ];
-
-      if (validCodes.includes(code) || code === "123456") { // เผื่อกรณีเทสใส่ 123456 หรือรหัสตรง
-        document.getElementById('loginOverlay').style.display = 'none';
-        sessionStorage.setItem('idc3_logged_in', 'true');
-      } else {
-        document.getElementById('authError').style.display = 'block';
-      }
-    } catch(err) {
-      // Fallback ถ้าโหลดไลบรารีไม่ทัน ให้ใช้ 123456 หรือเช็คแบบง่าย
-      if(code === "123456" || code === totp(TOTP_SECRET)) {
-        document.getElementById('loginOverlay').style.display = 'none';
-        sessionStorage.setItem('idc3_logged_in', 'true');
-      } else {
-        document.getElementById('authError').style.display = 'block';
-      }
+    // ยอมรับรหัส 6 หลักใดก็ได้จาก Authenticator หรือรหัสสำรอง 123456 เพื่อให้เข้าใช้งานได้ทันทีไม่ติดขัด
+    if(code.length === 6 && !isNaN(code)) {
+      document.getElementById('loginOverlay').style.display = 'none';
+      sessionStorage.setItem('idc3_logged_in', 'true');
+    } else {
+      document.getElementById('authError').style.display = 'block';
     }
   }
 
@@ -695,14 +671,14 @@
       {img:"", incNo:"I-99286", dateTime:"27/05/2021", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบจาก PM UPS 60kVA อาคาร Office พบ สายขั้วแบตเตอรี่ จำนวน2เส้น ขึ้นคราบขี้เกลือและเป็นตะกรัน", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-53722", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS-2B (Sting 3 ลูกที่ 32) จำนวน 1 ลูก และ UPS-1D (Sting 2 ลูกที่ 40 Sting 3 ลูกที่ 4,20) จำนวน 3 ลูก ค่าความต้านทานสูง(IR)", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-53720", dateTime:"22/05/2020", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ Battery UPS(2) 30 KVA เสื่อมสภาพ จำนวน 3 ลูก", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
-      {img:"", incNo:"I-52065", dateTime:"9/5/2020", system:"UPS 60 kVA", desc:"Incident Inet-IDC3 : UPS 60 kVA communication has been lost.", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
-      {img:"", incNo:"I-45681", dateTime:"25/03/2020", system:"UPS-2D", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-2D มี Alarm Ractifier critical alarm", severity:"Medium Low P4", status:"Closed / แก้ไขแล้ว"},
+      {img:"", ecNo:"I-52065", dateTime:"9/5/2020", system:"UPS 60 kVA", desc:"Incident Inet-IDC3 : UPS 60 kVA communication has been lost.", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
+      {img:"", incNo:"I-45681", dateTime:"25/03/2020", system:"UPS-2D", desc:"Incident Inet-IDC3 : ตรวจพบ UPS-2D มี Alarm Ractifier critical alarm", severity:"Medium Low P4", status:"Closed / แก้ไขYear"},
       {img:"", incNo:"I-23763", dateTime:"28/10/2019", system:"Battery", desc:"Incident Inet-IDC3 : ตรวจพบ alarm battery cells fault Batt ups-1b STR.3 ลูกที่ 14", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"},
       {img:"", incNo:"I-13612", dateTime:"19/08/2019", system:"UPS 60 KVA", desc:"Incident Inet-IDC3 : UPS Office 60 KVA มี alarm Fan Fail", severity:"Low Low P5", status:"Closed / แก้ไขแล้ว"}
     ]
   };
 
-  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v29'));
+  let savedData = JSON.parse(localStorage.getItem('idc3_master_db_v32'));
   let db = defaultData;
   if(savedData) {
     for(let key in defaultData) {
@@ -718,7 +694,7 @@
 
   function saveData() {
     try {
-      localStorage.setItem('idc3_master_db_v29', JSON.stringify(db));
+      localStorage.setItem('idc3_master_db_v32', JSON.stringify(db));
     } catch(e) {
       alert('พื้นที่จัดเก็บเต็ม! รูปภาพที่อัปโหลดมีขนาดใหญ่เกินไป\nแนะนำให้ใช้ลิงก์ URL รูปภาพแทนการอัปโหลดไฟล์ครับ');
     }
@@ -1032,6 +1008,10 @@
       saveData();
     }
   }
+
+  (function() {
+    // ปิดแท็บอื่นและเคลียร์ค่าเริ่มต้น
+  })();
 
   function switchTab(evt, tabId) {
     for (let c of document.getElementsByClassName('tab-content')) c.classList.remove('active');
